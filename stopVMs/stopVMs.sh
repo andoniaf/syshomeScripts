@@ -1,16 +1,15 @@
 #! /bin/bash
 
-# stopVMs - Script para organizar y automatizar el apagado de todas las VMs 
-#     (Despues de confirmar que este funciona correctamente crear uno que ejecute 
-#     este y tras hacer las comprobaciones necesarias apague el servidor)
+# stopVMs - Script para  automatizar el apagado de todas las VMs
 
-# Tiempo (en minutos) m√ximo para esperar antes de forzar el apagado de un VM
+MAIL=dominio@correo.com
+# Tiempo (en minutos) m√°ximo para esperar antes de forzar el apagado de un VM
 maxWait=3
 
 # Lista de VMs en funcionamiento (estado = running)
 vmList=$(qm list | grep running | tr -s " " ":" | cut -d ':' -f2)
 
-# Mandar se√al de apagado (ACPI shutdown) a todas las VMs en $vmList
+# Mandar se√±al de apagado (ACPI shutdown) a todas las VMs en $vmList
 for vm in $vmList; do
    qm shutdown $vm
 done
@@ -18,7 +17,7 @@ done
 # Bucle que comprueba si ya se han apagado todas las VMs, si no, espera.
 while [ $maxWait -gt 0 ]; do
 	vmList=$(qm list | grep running | tr -s " " ":" | cut -d ':' -f2)
-	[ -z "$vmList" ] && echo "Todas las VMs se han apagado correctamente" | mail -s "[SysNotif] Apagado de VMs" correo@dominio.com && break
+	[ -z "$vmList" ] && echo "Todas las VMs se han apagado correctamente" | mail -s "[SysNotif] Apagado de VMs" $MAIL && break
 	maxWait=$((maxWait-1))
 	sleep 60
 done
@@ -32,7 +31,5 @@ if [ $maxWait -eq 0 ]; then
       qm stop $vm
       vmForced=$vmForced+$vm+", "
    done
-   echo $vmForced  | mail -s "[SysNotif] Apagado de las MVs" dominio@correo.com
+   echo $vmForced  | mail -s "[SysNotif] Apagado de las MVs" $MAIL
 fi
-
-
