@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script para backup remoto de los datos de NextCloud
+# Script para backup remoto de los datos de NextCloud (solo los datos, no la aplicacion al completo)
 #
 # TO DO
 # - Que compruebe que las rutas existen
