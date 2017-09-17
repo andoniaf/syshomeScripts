@@ -67,13 +67,13 @@ done
 #
 if [ $BCKOK = 0 ]; then
     echo "## INFO: Backup completed OK"
-    mv $FILENAME $FILE
+    mv $DIR/$FILENAME $DIR/$FILE
     # Email notif
     echo "Backup completed. New file: $FILE" | mail -s "[SysNotif] Backup completed" $MAIL
     exit 0
 else
     echo "## WARN: Backup failed!!!"
-    rm -f $FILENAME
+    rm -f $DIR/$FILENAME
     # Email notif
     echo "Backup not completed. No new file... Check HDD space." | mail -s "[SysNotif] Backup failed!" $MAIL
     exit 1
